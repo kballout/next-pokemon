@@ -104,9 +104,6 @@ export default function ShortAnswer({ time, endGame }: props) {
       } else {
         let curr: PokemonType = { name: list[0].name, path: list[0].path };
         current.current = curr;
-        setGameStatus("waiting");
-        setTimer(timeToAnswer);
-        setNextTimer(null);
       }
     }
   }, [list]);
@@ -114,6 +111,12 @@ export default function ShortAnswer({ time, endGame }: props) {
   function updateList() {
     let newList = list.filter(item => item.name !== current.current?.name);
     setList(newList);
+  }
+
+  function loadedImage() {
+    setGameStatus("waiting");
+    setTimer(timeToAnswer);
+    setNextTimer(null);
   }
 
   if (!hydrated) {
@@ -150,6 +153,7 @@ export default function ShortAnswer({ time, endGame }: props) {
                   nextTimer === null && "brightness-[0.1]"
                 } mx-auto`}
                 priority
+                onLoadingComplete={() => loadedImage()}
                 alt="pokemonImage"
                 src={current.current?.path}
                 width={250}

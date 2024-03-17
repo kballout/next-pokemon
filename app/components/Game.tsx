@@ -37,9 +37,9 @@ export default function Game({ time, endGame }: props) {
     return list.sort((_a: any, _b: any) => 0.5 - Math.random());
   }
 
-  function nextOptions(list: Array<PokemonType>, current: PokemonType) {
+  function nextOptions(list: Array<PokemonType>) {
     let opt: Array<Option> = [];
-    opt.push({ name: current.name, status: STATUS.PENDING });
+    opt.push({ name: current.current!.name, status: STATUS.PENDING });
     let next;
     while (opt.length !== 4) {
       if (list.length <= 4) {
@@ -47,7 +47,7 @@ export default function Game({ time, endGame }: props) {
       } else {
         next = list[Math.floor(Math.random() * list.length)].name;
       }
-      if (next !== current.name) {
+      if (next !== current.current!.name) {
         opt.push({ name: next, status: STATUS.PENDING });
       }
     }
@@ -132,13 +132,16 @@ export default function Game({ time, endGame }: props) {
       } else {
         let curr: PokemonType = { name: list[0].name, path: list[0].path };
         current.current = curr;
-        nextOptions(list, curr);
-        setGameStatus("waiting");
-        setTimer(timeToAnswer);
-        setNextTimer(null);
       }
     }
   }, [list]);
+
+  function loadedImage() {
+    setGameStatus("waiting");
+    nextOptions(list);
+    setTimer(timeToAnswer);
+    setNextTimer(null);
+  }
 
   function updateList() {
     let newList = list.filter(item => item.name !== current.current?.name);
@@ -179,6 +182,7 @@ export default function Game({ time, endGame }: props) {
                   nextTimer === null && "brightness-[0.1]"
                 } mx-auto`}
                 priority
+                onLoadingComplete={() => loadedImage()}
                 alt="pokemonImage"
                 src={current.current?.path}
                 width={250}
