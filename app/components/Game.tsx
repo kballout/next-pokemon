@@ -23,7 +23,6 @@ export default function Game({ time, endGame }: props) {
   }
 
   const timeToAnswer = time;
-  const router = useRouter();
   const [hydrated, setHydrated] = useState(false);
   const [list, setList] = useState<Array<PokemonType>>([]);
   const current = useRef<PokemonType>();
@@ -171,7 +170,7 @@ export default function Game({ time, endGame }: props) {
         </h1>
         <div className="text-orange-800 text-center">
           <h1 className="md:text-xl text-2xl font-bold whitespace-nowrap">
-            Who's That Pokemon?
+            {`Who's That Pokemon?`}
           </h1>
           {current.current && (
             <>

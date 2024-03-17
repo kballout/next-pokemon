@@ -141,7 +141,7 @@ export default function ShortAnswer({ time, endGame }: props) {
             Score: {score}
           </h1>
           <h1 className="md:text-xl text-2xl font-bold whitespace-nowrap">
-            Who's That Pokemon?
+            {`Who's That Pokemon?`}
           </h1>
           {current.current && (
             <>
